@@ -214,7 +214,14 @@ npm run typecheck
     "title": "サンプルワールド",
     "description": "React Three FiberとRapierで作られたサンプルワールドです",
     "thumbnailPath": "thumbnail.png",
-    "buildCommand": "npm run build"
+    "buildCommand": "npm run build",
+    "ignore": [
+      "**/.DS_Store",
+      "**/Thumbs.db",
+      "**/*.js.map",
+      "**/.gitkeep",
+      "**/index.html"
+    ]
   }
 }
 ```
@@ -226,6 +233,7 @@ npm run typecheck
 - `description` (任意): ワールドの説明（プロンプトのデフォルト値になります）
 - `thumbnailPath` (任意): `distDir`内のサムネイル画像の相対パス（例: `thumbnail.png`）
 - `buildCommand` (任意): アップロード前に自動実行するビルドコマンド
+- `ignore` (任意): アップロード時に除外するファイルパターン（glob形式）
 
 ### メリット
 
@@ -237,6 +245,9 @@ npm run typecheck
 
 #### thumbnailPath
 サムネイル画像がフロントエンドのワールド一覧に表示され、ビジュアル的に分かりやすくなります。
+
+#### ignore
+不要なファイル（システムファイル、source mapなど）を自動的に除外することで、アップロード容量を削減し、デプロイを高速化します。デフォルトで推奨パターンが設定されているため、ユーザーは何も設定せずに最適化されたアップロードが可能です。
 
 ## ワールドの公開
 

@@ -4,6 +4,13 @@
     "title": "サンプルワールド",
     "description": "React Three FiberとRapierで作られたサンプルワールドです",
     "thumbnailPath": "thumbnail.png",
-    "buildCommand": "npm run build"
+    "buildCommand": "npm run build",
+    "ignore": [
+      "**/.DS_Store",
+      "**/Thumbs.db",
+      "**/*.js.map",
+      "**/.gitkeep",
+      "**/index.html"
+    ]
   }
 }
