@@ -31,10 +31,16 @@
   },
   "devDependencies": {
     "@originjs/vite-plugin-federation": "^1.4.1",
+    "@react-three/drei": "^10.7.6",
+    "@react-three/fiber": "^9.4.0",
+    "@react-three/rapier": "^2.2.0",
     "@types/react": "^19.1.9",
     "@types/react-dom": "^19.1.7",
     "@types/three": "^0.176.0",
     "@vitejs/plugin-react": "^4.3.2",
+    "react": "^19.2.0",
+    "react-dom": "^19.2.0",
+    "three": "^0.181.0",
     "typescript": "^5.6.2",
     "vite": "^6.0.1",
     "vite-plugin-dts": "^4.0.0"
@@ -43,6 +49,6 @@
     "access": "public"
   },
   "dependencies": {
-    "@xrift/world-components": "^0.1.0"
+    "@xrift/world-components": "^0.2.3"
   }
 }
