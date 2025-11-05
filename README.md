@@ -157,6 +157,55 @@ function App() {
 
 本番環境（XRiftプラットフォーム上）では、フロントエンド側が自動的に`XRiftProvider`でワールドコンポーネントをラップするため、ワールド側で`XRiftProvider`を使用する必要はありません。
 
+#### インタラクティブなオブジェクトの作成
+
+`@xrift/world-components`の`Interactable`コンポーネントを使用すると、ユーザーがクリック（インタラクト）できる3Dオブジェクトを簡単に作成できます。
+
+```typescript
+import { Interactable } from '@xrift/world-components'
+import { RigidBody } from '@react-three/rapier'
+
+function InteractiveButton() {
+  const handleClick = (id: string) => {
+    console.log(`${id} がクリックされました！`)
+    // クリック時の処理をここに記述
+  }
+
+  return (
+    <Interactable
+      id="my-button"
+      onInteract={handleClick}
+      interactionText="ボタンをクリック"
+    >
+      <RigidBody type="fixed">
+        <mesh position={[0, 1, -3]}>
+          <boxGeometry args={[1, 0.3, 1]} />
+          <meshStandardMaterial color="#4a9eff" />
+        </mesh>
+      </RigidBody>
+    </Interactable>
+  )
+}
+```
+
+##### Interactableのプロパティ
+
+- `id` (必須): オブジェクトの一意な識別子
+- `onInteract` (必須): クリック時に呼ばれるコールバック関数。オブジェクトのIDが引数として渡されます
+- `interactionText` (任意): インタラクション時に表示されるテキスト。省略時は「クリックする」が表示されます
+- `enabled` (任意): インタラクションの有効/無効を切り替え。デフォルトは`true`
+- `children` (必須): インタラクション可能にしたい3Dオブジェクト
+
+##### 使用例
+
+このテンプレートには、`src/components/InteractableButton/`に実装例が含まれています：
+
+- クリック回数をカウント
+- クリック数に応じて色が変化
+- ボタンを押すアニメーション効果
+
+詳細な実装は`src/components/InteractableButton/index.tsx`と`src/World.tsx`を参照してください。
+
 ## .xriftディレクトリについて
 
 `.xrift/`ディレクトリには、ワールドの設定情報（ワールドIDなど）がローカル環境固有の情報として保存されます。このディレクトリは`.gitignore`に含まれており、リポジトリにコミットされません。

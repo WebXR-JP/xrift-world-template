@@ -2,6 +2,7 @@ import { RigidBody } from '@react-three/rapier'
 import { useRef } from 'react'
 import { Mesh } from 'three'
 import { Duck } from './components/Duck'
+import { InteractableButton } from './components/InteractableButton'
 import { Mirror } from './components/Mirror'
 import { RotatingObject } from './components/RotatingObject'
 import { Skybox } from './components/Skybox'
@@ -195,6 +196,22 @@ export const World: React.FC<WorldProps> = ({ position = [0, 0, 0], scale = 1 })
       <RigidBody type="dynamic" colliders="cuboid" restitution={0} friction={0}>
         <Duck position={[-2, 0.5, 0]} scale={1} />
       </RigidBody>
+
+      {/* Interactableボタン - クリック可能なオブジェクトの例 */}
+      <InteractableButton
+        position={[0, 1, -3]}
+        id="sample-button-1"
+        label="押してね！"
+        interactionText="ボタンをクリック"
+      />
+
+      {/* 別のInteractableボタン */}
+      <InteractableButton
+        position={[2.5, 1, -3]}
+        id="sample-button-2"
+        label="カウンター"
+        interactionText="カウントアップ"
+      />
     </group>
   )
 }
