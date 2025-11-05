@@ -10,7 +10,16 @@
       "**/Thumbs.db",
       "**/*.js.map",
       "**/.gitkeep",
-      "**/index.html"
+      "**/index.html",
+      "**/__federation_shared_@react-three/drei-*.js",
+      "**/__federation_shared_@react-three/fiber-*.js",
+      "**/__federation_shared_@react-three/rapier-*.js",
+      "**/__federation_shared_@xrift/world-components-*.js",
+      "**/__federation_shared_three-*.js",
+      "**/__federation_shared_react-*.js",
+      "**/__federation_shared_react-dom-*.js",
+      "**/rapier.es-*.js",
+      "**/hls-*.js"
     ]
   }
 }
