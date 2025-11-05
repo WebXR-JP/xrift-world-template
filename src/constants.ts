@@ -8,7 +8,7 @@ export const COLORS = {
   ground: '#90EE90',
   wall: '#8B4513',
   decorations: {
-    box: '#FF6347',
+    box: '#FFFF00',
     cylinder: '#4169E1',
     sphere: '#FFD700',
   },
