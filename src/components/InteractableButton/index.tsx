@@ -1,6 +1,6 @@
 import { useState, useRef } from 'react'
 import { RigidBody } from '@react-three/rapier'
-import { Interactable } from '@xrift/world-components'
+import { Interactable, useInstanceState } from '@xrift/world-components'
 import { Text } from '@react-three/drei'
 import type { Mesh } from 'three'
 
@@ -9,25 +9,39 @@ export interface InteractableButtonProps {
   id?: string
   label?: string
   interactionText?: string
+  useGlobalState?: boolean
 }
 
 /**
  * Interactableを使ったインタラクティブなボタンコンポーネント
  * クリックすると色が変わり、クリック回数をカウントします
+ * useGlobalState=trueにすると、インスタンス内の全ユーザー間で状態が同期されます
  */
 export const InteractableButton: React.FC<InteractableButtonProps> = ({
   position = [0, 1, -3],
   id = 'interactive-button',
   label = 'ボタン',
   interactionText = 'ボタンを押す',
+  useGlobalState = false,
 }) => {
-  const [clickCount, setClickCount] = useState(0)
+  // グローバルステート（インスタンス全体で同期）
+  const [globalClickCount, setGlobalClickCount] = useInstanceState<number>(
+    `button-${id}-count`,
+    0
+  )
+
+  // ローカルステート（各ユーザー個別）
+  const [localClickCount, setLocalClickCount] = useState(0)
   const [isPressed, setIsPressed] = useState(false)
   const meshRef = useRef<Mesh>(null)
 
+  // useGlobalStateフラグに応じて、グローバルまたはローカルステートを使用
+  const clickCount = useGlobalState ? globalClickCount : localClickCount
+  const setClickCount = useGlobalState ? setGlobalClickCount : setLocalClickCount
+
   const handleInteract = (objectId: string) => {
     console.log(`${objectId} がクリックされました！`)
-    setClickCount((prev) => prev + 1)
+    setClickCount((prev: number) => prev + 1)
 
     // ボタンを押した状態にする
     setIsPressed(true)
@@ -64,9 +78,9 @@ export const InteractableButton: React.FC<InteractableButtonProps> = ({
         {clickCount > 0 ? `${clickCount}回クリック` : ''}
       </Text>
 
-      {/* ボタンのラベル - ボタンの中央 */}
+      {/* ボタンのラベル - ボタンの前面 */}
       <Text
-        position={[0, 0, 0]}
+        position={[0, 0, 0.51]}
         fontSize={0.15}
         color="white"
         anchorX="center"

@@ -197,20 +197,22 @@ export const World: React.FC<WorldProps> = ({ position = [0, 0, 0], scale = 1 })
         <Duck position={[-2, 0.5, 0]} scale={1} />
       </RigidBody>
 
-      {/* Interactableボタン - クリック可能なオブジェクトの例 */}
+      {/* Interactableボタン - クリック可能なオブジェクトの例（ローカルステート） */}
       <InteractableButton
         position={[0, 1, -3]}
         id="sample-button-1"
-        label="押してね！"
+        label="ローカル"
         interactionText="ボタンをクリック"
+        useGlobalState={false}
       />
 
-      {/* 別のInteractableボタン */}
+      {/* 別のInteractableボタン（グローバルステート - インスタンス全体で同期） */}
       <InteractableButton
         position={[2.5, 1, -3]}
         id="sample-button-2"
-        label="カウンター"
+        label="グローバル"
         interactionText="カウントアップ"
+        useGlobalState={true}
       />
     </group>
   )

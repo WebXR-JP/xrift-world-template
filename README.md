@@ -206,6 +206,79 @@ function InteractiveButton() {
 
 詳細な実装は`src/components/InteractableButton/index.tsx`と`src/World.tsx`を参照してください。
 
+#### インスタンス全体で同期される状態管理（useInstanceState）
+
+`@xrift/world-components`の`useInstanceState`フックを使用すると、同じワールドインスタンス内の全ユーザー間で状態を同期できます。これにより、マルチユーザー対応のインタラクティブなワールドを簡単に作成できます。
+
+```typescript
+import { useInstanceState } from '@xrift/world-components'
+
+function GlobalCounter() {
+  // インスタンス全体で同期されるカウンター
+  const [count, setCount] = useInstanceState<number>('global-counter', 0)
+
+  const handleClick = () => {
+    setCount((prev) => prev + 1)
+  }
+
+  return (
+    <Interactable id="counter" onInteract={handleClick}>
+      <mesh>
+        <boxGeometry args={[1, 1, 1]} />
+        <meshStandardMaterial color={count > 5 ? 'green' : 'blue'} />
+      </mesh>
+    </Interactable>
+  )
+}
+```
+
+##### useInstanceStateの使い方
+
+```typescript
+const [state, setState] = useInstanceState<T>(stateId, initialState)
+```
+
+**パラメータ:**
+- `stateId`: 状態の一意識別子（インスタンス内で一意である必要があります）
+- `initialState`: 初期状態値
+- `setState`: 状態を更新する関数（Reactの`useState`と同じAPI）
+
+**更新パターン:**
+```typescript
+// 直接値を設定
+setState({ enabled: true })
+
+// 関数型アップデート
+setState(prev => ({ enabled: !prev.enabled }))
+```
+
+**重要な注意点:**
+- 状態はJSON形式でシリアライズ可能である必要があります
+- プラットフォーム側がWebSocketを通じて全クライアント間の同期を実現します
+- ローカル開発環境（Context未設定時）では通常の`useState`として動作します
+
+##### ローカルステートとグローバルステートの使い分け
+
+このテンプレートの`InteractableButton`コンポーネントは、`useGlobalState`プロパティで動作を切り替えられる実装例を提供しています：
+
+```typescript
+// ローカルステート（各ユーザーごとに独立）
+<InteractableButton
+  id="local-button"
+  label="ローカル"
+  useGlobalState={false}
+/>
+
+// グローバルステート（全ユーザー間で同期）
+<InteractableButton
+  id="global-button"
+  label="グローバル"
+  useGlobalState={true}
+/>
+```
+
+実装の詳細は`src/components/InteractableButton/index.tsx`を参照してください。
+
 ## .xriftディレクトリについて
 
 `.xrift/`ディレクトリには、ワールドの設定情報（ワールドIDなど）がローカル環境固有の情報として保存されます。このディレクトリは`.gitignore`に含まれており、リポジトリにコミットされません。
