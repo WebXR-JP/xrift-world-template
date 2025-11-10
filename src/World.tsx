@@ -1,4 +1,4 @@
-import { Mirror } from '@xrift/world-components'
+import { Mirror, VideoScreen } from '@xrift/world-components'
 import { RigidBody } from '@react-three/rapier'
 import { useRef } from 'react'
 import { Mesh } from 'three'
@@ -182,6 +182,15 @@ export const World: React.FC<WorldProps> = ({ position = [0, 0, 0], scale = 1 })
       <Mirror
         position={[0, 2.5 * scale, -9.5]}
         size={[4 * scale, 3 * scale]}
+      />
+
+      {/* ビデオスクリーン - 右側の壁に配置（全ユーザーで同期） */}
+      <VideoScreen
+        id="main-video-screen"
+        position={[6 * scale, 2 * scale, 0]}
+        rotation={[0, -Math.PI / 2, 0]}
+        scale={[16/9 * 2.5 * scale, 2.5 * scale]}
+        url="https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4"
       />
 
       {/* アニメーション: ぐるぐる回るオブジェクト */}
