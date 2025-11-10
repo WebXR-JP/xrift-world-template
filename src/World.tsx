@@ -1,9 +1,9 @@
+import { Mirror } from '@xrift/world-components'
 import { RigidBody } from '@react-three/rapier'
 import { useRef } from 'react'
 import { Mesh } from 'three'
 import { Duck } from './components/Duck'
 import { InteractableButton } from './components/InteractableButton'
-import { Mirror } from './components/Mirror'
 import { RotatingObject } from './components/RotatingObject'
 import { Skybox } from './components/Skybox'
 import { COLORS, WORLD_CONFIG } from './constants'
@@ -180,8 +180,8 @@ export const World: React.FC<WorldProps> = ({ position = [0, 0, 0], scale = 1 })
 
       {/* 鏡 - ワールドの中央に配置 */}
       <Mirror
-        position={[0, 1.2 * scale, -9.5]}
-        size={[2 * scale, 2 * scale]}
+        position={[0, 2.5 * scale, -9.5]}
+        size={[4 * scale, 3 * scale]}
       />
 
       {/* アニメーション: ぐるぐる回るオブジェクト */}
