@@ -1,4 +1,4 @@
-import { Mirror, VideoScreen } from '@xrift/world-components'
+import { Mirror, ScreenShareDisplay, VideoScreen } from '@xrift/world-components'
 import { RigidBody } from '@react-three/rapier'
 import { useRef } from 'react'
 import { Mesh } from 'three'
@@ -30,8 +30,8 @@ export const World: React.FC<WorldProps> = ({ position = [0, 0, 0], scale = 1 })
         position={[10, 10, 5]}
         intensity={1}
         castShadow
-        shadow-mapSize-width={4096}
-        shadow-mapSize-height={4096}
+        shadow-mapSize-width={1024}
+        shadow-mapSize-height={1024}
         shadow-camera-far={50}
         shadow-camera-left={-15}
         shadow-camera-right={15}
@@ -162,6 +162,13 @@ export const World: React.FC<WorldProps> = ({ position = [0, 0, 0], scale = 1 })
         rotation={[0, -Math.PI / 2, 0]}
         url='https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4'
         playing
+      />
+
+      {/* 画面共有ディスプレイ - 左側の壁に配置 */}
+      <ScreenShareDisplay
+        id='screen-share-1'
+        position={[-9.72, 2, 0]}
+        rotation={[0, Math.PI / 2, 0]}
       />
 
       {/* アニメーション: ぐるぐる回るオブジェクト */}
