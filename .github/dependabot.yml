@@ -1,0 +1,34 @@
+# To get started with Dependabot version updates, you'll need to specify which
+# package ecosystems to update and where the package manifests are located.
+# Please see the documentation for all configuration options:
+# https://help.github.com/github/administering-a-repository/configuration-options-for-dependency-updates
+
+version: 2
+updates:
+  - package-ecosystem: npm
+    directory: "/"
+    schedule:
+      interval: daily
+      time: "09:00"
+      timezone: "Asia/Tokyo"
+    open-pull-requests-limit: 5
+    groups:
+      DefinitelyTyped:
+        patterns:
+          - "@types*"
+      react-three:
+        patterns:
+          - "@react-three*"
+      react:
+        patterns:
+          - "react"
+          - "react-dom"
+      three:
+        patterns:
+          - "three"
+      vite:
+        patterns:
+          - "vite"
+          - "vite-*"
+          - "@vitejs*"
+          - "@originjs/vite-*"
