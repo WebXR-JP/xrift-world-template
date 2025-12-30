@@ -26,7 +26,9 @@ export const World: React.FC<WorldProps> = ({ position = [0, 0, 0], scale = 1 })
       <Skybox radius={500} />
 
       {/* プレイヤーのスポーン地点 */}
-      <SpawnPoint position={[0, 0, 5]} yaw={180} />
+      <group position={[0, 0, 7.33]} rotation={[0, Math.PI, 0]}>
+        <SpawnPoint />
+      </group>
 
       {/* 照明設定 */}
       <ambientLight intensity={0.3} />
