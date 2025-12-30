@@ -49,28 +49,30 @@ export const SpawnPoint: React.FC<SpawnPointProps> = ({
       {/* SpawnPoint本体 */}
       <SpawnPointCore position={position} yaw={yaw} />
 
-      <group position={position}>
+      {/* 開発時のみヘルパーを表示 */}
+      {import.meta.env.DEV && (
+        <group position={position}>
+          {/* 半透明の円柱（下から上にかけて透明度が増す） */}
+          <mesh position={[0, 0.375, 0]}>
+            <cylinderGeometry args={[0.5, 0.5, 0.75, 32, 1, true]} />
+            <gradientCylinderMaterial transparent side={DoubleSide} depthWrite={false} />
+          </mesh>
 
-      {/* 半透明の円柱（下から上にかけて透明度が増す） */}
-      <mesh position={[0, 0.375, 0]}>
-        <cylinderGeometry args={[0.5, 0.5, 0.75, 32, 1, true]} />
-        <gradientCylinderMaterial transparent side={DoubleSide} depthWrite={false} />
-      </mesh>
-
-      {/* 矢印（向きを示す） - yawに合わせて回転 */}
-      <group rotation={[0, -yawRad, 0]}>
-        {/* 矢印の軸 */}
-        <mesh position={[0, 0.3, -0.1]} rotation={[Math.PI / 2, 0, 0]}>
-          <cylinderGeometry args={[0.03, 0.03, 0.3, 8]} />
-          <meshBasicMaterial color="#00ff88" />
-        </mesh>
-        {/* 矢印の先端 */}
-        <mesh position={[0, 0.3, 0.12]} rotation={[Math.PI / 2, 0, 0]}>
-          <coneGeometry args={[0.08, 0.15, 8]} />
-          <meshBasicMaterial color="#00ff88" />
-        </mesh>
-      </group>
-      </group>
+          {/* 矢印（向きを示す） - yawに合わせて回転 */}
+          <group rotation={[0, -yawRad, 0]}>
+            {/* 矢印の軸 */}
+            <mesh position={[0, 0.3, -0.1]} rotation={[Math.PI / 2, 0, 0]}>
+              <cylinderGeometry args={[0.03, 0.03, 0.3, 8]} />
+              <meshBasicMaterial color="#00ff88" />
+            </mesh>
+            {/* 矢印の先端 */}
+            <mesh position={[0, 0.3, 0.12]} rotation={[Math.PI / 2, 0, 0]}>
+              <coneGeometry args={[0.08, 0.15, 8]} />
+              <meshBasicMaterial color="#00ff88" />
+            </mesh>
+          </group>
+        </group>
+      )}
     </>
   )
 }
