@@ -6,6 +6,7 @@ import { Duck } from './components/Duck'
 import { InteractableButton } from './components/InteractableButton'
 import { RotatingObject } from './components/RotatingObject'
 import { Skybox } from './components/Skybox'
+import { SpawnPointHelper } from './components/SpawnPointHelper'
 import { COLORS, WORLD_CONFIG } from './constants'
 
 export interface WorldProps {
@@ -26,6 +27,7 @@ export const World: React.FC<WorldProps> = ({ position = [0, 0, 0], scale = 1 })
 
       {/* プレイヤーのスポーン地点 */}
       <SpawnPoint position={[0, 0, 5]} yaw={180} />
+      <SpawnPointHelper position={[0, 0, 5]} yaw={180} />
 
       {/* 照明設定 */}
       <ambientLight intensity={0.3} />
