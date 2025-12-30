@@ -1,4 +1,4 @@
-import { SpawnPoint } from '@xrift/world-components'
+import { SpawnPoint as SpawnPointCore } from '@xrift/world-components'
 import { shaderMaterial } from '@react-three/drei'
 import { extend } from '@react-three/fiber'
 import { DoubleSide } from 'three'
@@ -33,12 +33,12 @@ declare module '@react-three/fiber' {
   }
 }
 
-export interface SpawnPointHelperProps {
+export interface SpawnPointProps {
   position?: [number, number, number]
   yaw?: number
 }
 
-export const SpawnPointHelper: React.FC<SpawnPointHelperProps> = ({
+export const SpawnPoint: React.FC<SpawnPointProps> = ({
   position = [0, 0, 0],
   yaw = 0,
 }) => {
@@ -47,7 +47,7 @@ export const SpawnPointHelper: React.FC<SpawnPointHelperProps> = ({
   return (
     <group position={position}>
       {/* SpawnPoint本体 */}
-      <SpawnPoint yaw={yaw} />
+      <SpawnPointCore yaw={yaw} />
 
       {/* 半透明の円柱（下から上にかけて透明度が増す） */}
       <mesh position={[0, 0.375, 0]}>

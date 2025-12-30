@@ -159,10 +159,10 @@ function App() {
 
 #### プレイヤーのスポーン地点を設定する
 
-`@xrift/world-components`の`SpawnPoint`コンポーネントを使用すると、プレイヤーがワールドに入った時の初期位置と向きを設定できます。
+`src/components/SpawnPoint`の`SpawnPoint`コンポーネントを使用すると、プレイヤーがワールドに入った時の初期位置と向きを設定できます。このコンポーネントは`@xrift/world-components`のSpawnPointをラップし、開発時に位置と向きを視覚的に確認できるヘルパー表示を追加しています。
 
 ```typescript
-import { SpawnPoint } from '@xrift/world-components'
+import { SpawnPoint } from './components/SpawnPoint'
 
 function World() {
   return (
@@ -183,7 +183,7 @@ function World() {
 
 ##### 使用例
 
-このテンプレートでは、`src/World.tsx`でプレイヤーがワールドの中央やや手前（Z=5）に、原点方向（yaw=180）を向いてスポーンするように設定されています。
+このテンプレートでは、`src/World.tsx`でプレイヤーがワールドの中央やや手前（Z=5）に、原点方向（yaw=180）を向いてスポーンするように設定されています。開発時には半透明の円柱と矢印でスポーン位置と向きが表示されます。
 
 #### インタラクティブなオブジェクトの作成
 
