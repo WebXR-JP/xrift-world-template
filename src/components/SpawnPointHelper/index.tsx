@@ -1,3 +1,4 @@
+import { SpawnPoint } from '@xrift/world-components'
 import { DoubleSide } from 'three'
 
 export interface SpawnPointHelperProps {
@@ -13,6 +14,8 @@ export const SpawnPointHelper: React.FC<SpawnPointHelperProps> = ({
 
   return (
     <group position={position}>
+      {/* SpawnPoint本体 */}
+      <SpawnPoint yaw={yaw} />
       {/* 半透明の円柱（スポーン範囲を示す） */}
       <mesh position={[0, 0.75, 0]}>
         <cylinderGeometry args={[0.5, 0.5, 1.5, 32, 1, true]} />
