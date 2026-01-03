@@ -1,6 +1,5 @@
-import { useUsers, type User } from '@xrift/world-components'
+import { useUsers } from '@xrift/world-components'
 import { Text } from '@react-three/drei'
-import { useEffect, useRef } from 'react'
 
 interface UsersDisplayProps {
   position?: [number, number, number]
@@ -10,52 +9,12 @@ interface UsersDisplayProps {
 /**
  * useUsers() hooks の動作確認用ディスプレイコンポーネント
  * インスタンス参加者の一覧を壁に表示する
- *
- * 確認項目:
- * - localUser が取得できること
- * - remoteUsers が取得できること
- * - 他ユーザーが参加/退出した時に remoteUsers が更新されること
- * - 位置更新時に不要な再レンダリングが発生しないこと
  */
 export const UsersDisplay = ({
   position = [0, 2, -9],
   rotation = [0, 0, 0],
 }: UsersDisplayProps) => {
   const { localUser, remoteUsers } = useUsers()
-  const renderCountRef = useRef(0)
-  const prevRemoteUsersRef = useRef<User[]>([])
-
-  // レンダリング回数をカウント
-  renderCountRef.current += 1
-
-  // ユーザー情報の変化をコンソールに出力
-  useEffect(() => {
-    console.log('[UsersDisplay] localUser:', localUser)
-    console.log('[UsersDisplay] remoteUsers:', remoteUsers)
-    console.log('[UsersDisplay] renderCount:', renderCountRef.current)
-  }, [localUser, remoteUsers])
-
-  // remoteUsersの変化を検知（参加/退出）
-  useEffect(() => {
-    const prevIds = new Set(prevRemoteUsersRef.current.map((u) => u.id))
-    const currentIds = new Set(remoteUsers.map((u) => u.id))
-
-    // 新規参加ユーザーを検知
-    for (const user of remoteUsers) {
-      if (!prevIds.has(user.id)) {
-        console.log('[UsersDisplay] User joined:', user)
-      }
-    }
-
-    // 退出ユーザーを検知
-    for (const user of prevRemoteUsersRef.current) {
-      if (!currentIds.has(user.id)) {
-        console.log('[UsersDisplay] User left:', user)
-      }
-    }
-
-    prevRemoteUsersRef.current = remoteUsers
-  }, [remoteUsers])
 
   // 参加者一覧テキストを生成
   const generateUsersText = () => {
