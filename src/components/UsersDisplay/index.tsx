@@ -57,6 +57,12 @@ export const UsersDisplay = ({
     prevRemoteUsersRef.current = remoteUsers
   }, [remoteUsers])
 
+  // IDを安全に短縮表示
+  const formatId = (id: string | undefined) => {
+    if (!id) return '(no id)'
+    return `${id.slice(0, 8)}...`
+  }
+
   // 参加者一覧テキストを生成
   const generateUsersText = () => {
     const lines: string[] = []
@@ -66,9 +72,9 @@ export const UsersDisplay = ({
 
     // ローカルユーザー
     lines.push('[You]')
-    if (localUser) {
-      lines.push(`  ${localUser.displayName}`)
-      lines.push(`  ID: ${localUser.id.slice(0, 8)}...`)
+    if (localUser?.id) {
+      lines.push(`  ${localUser.displayName ?? '(no name)'}`)
+      lines.push(`  ID: ${formatId(localUser.id)}`)
       lines.push(`  Guest: ${localUser.isGuest ? 'Yes' : 'No'}`)
     } else {
       lines.push('  (Not connected)')
@@ -80,8 +86,8 @@ export const UsersDisplay = ({
     lines.push(`[Others] (${remoteUsers.length})`)
     if (remoteUsers.length > 0) {
       for (const user of remoteUsers) {
-        lines.push(`  - ${user.displayName}`)
-        lines.push(`    ID: ${user.id.slice(0, 8)}...`)
+        lines.push(`  - ${user.displayName ?? '(no name)'}`)
+        lines.push(`    ID: ${formatId(user.id)}`)
       }
     } else {
       lines.push('  (No other users)')
