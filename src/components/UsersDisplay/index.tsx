@@ -57,44 +57,24 @@ export const UsersDisplay = ({
     prevRemoteUsersRef.current = remoteUsers
   }, [remoteUsers])
 
-  // IDを安全に短縮表示
-  const formatId = (id: string | undefined) => {
-    if (!id) return '(no id)'
-    return `${id.slice(0, 8)}...`
-  }
-
   // 参加者一覧テキストを生成
   const generateUsersText = () => {
     const lines: string[] = []
 
-    lines.push('=== Instance Users ===')
+    lines.push('=== Users ===')
     lines.push('')
 
     // ローカルユーザー
-    lines.push('[You]')
-    if (localUser?.id) {
-      lines.push(`  ${localUser.displayName ?? '(no name)'}`)
-      lines.push(`  ID: ${formatId(localUser.id)}`)
-      lines.push(`  Guest: ${localUser.isGuest ? 'Yes' : 'No'}`)
+    if (localUser?.displayName) {
+      lines.push(`* ${localUser.displayName} (you)`)
     } else {
-      lines.push('  (Not connected)')
+      lines.push('* (Not connected)')
     }
-
-    lines.push('')
 
     // リモートユーザー
-    lines.push(`[Others] (${remoteUsers.length})`)
-    if (remoteUsers.length > 0) {
-      for (const user of remoteUsers) {
-        lines.push(`  - ${user.displayName ?? '(no name)'}`)
-        lines.push(`    ID: ${formatId(user.id)}`)
-      }
-    } else {
-      lines.push('  (No other users)')
+    for (const user of remoteUsers) {
+      lines.push(`* ${user.displayName ?? '???'}`)
     }
-
-    lines.push('')
-    lines.push(`Render count: ${renderCountRef.current}`)
 
     return lines.join('\n')
   }
@@ -103,7 +83,7 @@ export const UsersDisplay = ({
     <group position={position} rotation={rotation}>
       {/* 背景パネル */}
       <mesh position={[0, 0, 0.01]}>
-        <planeGeometry args={[3, 2.5]} />
+        <planeGeometry args={[2, 1.5]} />
         <meshBasicMaterial color="#222222" opacity={0.9} transparent />
       </mesh>
 
@@ -114,7 +94,7 @@ export const UsersDisplay = ({
         color="#00ff00"
         anchorX="center"
         anchorY="middle"
-        maxWidth={2.8}
+        maxWidth={1.8}
         textAlign="left"
         font="https://fonts.gstatic.com/s/roboto/v32/KFOmCnqEu92Fr1Me5Q.ttf"
       >
