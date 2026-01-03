@@ -6,6 +6,7 @@ import { Duck } from './components/Duck'
 import { InteractableButton } from './components/InteractableButton'
 import { RotatingObject } from './components/RotatingObject'
 import { Skybox } from './components/Skybox'
+import { UsersDisplay } from './components/UsersDisplay'
 import { COLORS, WORLD_CONFIG } from './constants'
 
 export interface WorldProps {
@@ -160,6 +161,9 @@ export const World: React.FC<WorldProps> = ({ position = [0, 0, 0], scale = 1 })
         position={[0, 2.5 * scale, -9.5]}
         size={[4 * scale, 3 * scale]}
       />
+
+      {/* 参加者一覧ディスプレイ - useUsers() hooks の動作確認用 */}
+      <UsersDisplay position={[6, 2, -9.5]} />
 
       <VideoScreen
         id='sample-video'
