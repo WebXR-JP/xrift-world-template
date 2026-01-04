@@ -32,7 +32,7 @@
   "devDependencies": {
     "@originjs/vite-plugin-federation": "^1.4.1",
     "@react-three/drei": "^10.7.7",
-    "@react-three/fiber": "^9.4.2",
+    "@react-three/fiber": "^9.5.0",
     "@react-three/rapier": "^2.2.0",
     "@types/react": "^19.2.7",
     "@types/react-dom": "^19.2.3",
