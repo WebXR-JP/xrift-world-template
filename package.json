@@ -49,6 +49,6 @@
     "access": "public"
   },
   "dependencies": {
-    "@xrift/world-components": "^0.12.5"
+    "@xrift/world-components": "^0.15.1"
   }
 }

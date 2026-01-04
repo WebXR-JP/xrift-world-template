@@ -4,6 +4,7 @@ import { useRef } from 'react'
 import { Mesh } from 'three'
 import { Duck } from './components/Duck'
 import { InteractableButton } from './components/InteractableButton'
+import { RemoteUserHUDs } from './components/RemoteUserHUDs'
 import { RotatingObject } from './components/RotatingObject'
 import { Skybox } from './components/Skybox'
 import { COLORS, WORLD_CONFIG } from './constants'
@@ -206,6 +207,9 @@ export const World: React.FC<WorldProps> = ({ position = [0, 0, 0], scale = 1 })
         interactionText="カウントアップ"
         useGlobalState={true}
       />
+
+      {/* ユーザーの位置情報HUD - useUsers() APIの検証用 */}
+      <RemoteUserHUDs />
     </group>
   )
 }
