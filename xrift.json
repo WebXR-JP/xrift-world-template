@@ -24,7 +24,7 @@
       "**/hls-*.js"
     ],
     "physics": {
-      "gravity": -9.81,
+      "gravity": 9.81,
       "allowInfiniteJump": true
     }
   }

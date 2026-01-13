@@ -71,7 +71,7 @@ xrift.jsonの`world.physics`セクションでワールドの物理動作をカ�
 
 | 設定 | 型 | デフォルト | 説明 |
 |------|-----|---------|------|
-| `gravity` | number | -9.81 | 重力の強さ（負の値で下向き） |
+| `gravity` | number | 9.81 | 重力の強さ |
 | `allowInfiniteJump` | boolean | true | 無限ジャンプを許可するか |
 
 ### 例：アスレチックワールド（無限ジャンプ禁止）
@@ -92,7 +92,7 @@ xrift.jsonの`world.physics`セクションでワールドの物理動作をカ�
 {
   "world": {
     "physics": {
-      "gravity": -3.0
+      "gravity": 3.0
     }
   }
 }
