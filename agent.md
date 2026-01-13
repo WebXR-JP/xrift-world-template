@@ -283,6 +283,31 @@ xrift-world-template/
 
 ---
 
+## xrift.json 設定
+
+### physics（物理演算設定）
+
+| 項目 | 型 | デフォルト値 | 説明 |
+|------|-----|-----------|------|
+| `gravity` | number | 9.81 | 重力の強さ（正の値、地球=9.81、月=1.62、木星=24.79） |
+| `allowInfiniteJump` | boolean | true | 無限ジャンプを許可するか |
+
+```json
+{
+  "physics": {
+    "gravity": 9.81,
+    "allowInfiniteJump": true
+  }
+}
+```
+
+**設定例**:
+- **アスレチックワールド**: `"allowInfiniteJump": false` で落下のリスクを追加
+- **低重力ワールド**: `"gravity": 1.62`（月の重力）でふわふわした動き
+- **高重力ワールド**: `"gravity": 24.79`（木星の重力）で重厚な動き
+
+---
+
 ## コマンドリファレンス
 
 ```bash

@@ -22,10 +22,6 @@
       "**/__federation_shared_react/jsx-runtime-*.js",
       "**/rapier.es-*.js",
       "**/hls-*.js"
-    ],
-    "physics": {
-      "gravity": 9.81,
-      "allowInfiniteJump": true
-    }
+    ]
   }
 }

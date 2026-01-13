@@ -60,18 +60,18 @@ const HpBar = ({ hp, maxHp }: HpBarProps) => {
 }
 
 interface RemoteUserHUDProps {
-  socketId: string
-  getMovement: (socketId: string) => PlayerMovement | undefined
+  userId: string
+  getMovement: (userId: string) => PlayerMovement | undefined
   hp: number
   maxHp: number
 }
 
-const RemoteUserHUD = ({ socketId, getMovement, hp, maxHp }: RemoteUserHUDProps) => {
+const RemoteUserHUD = ({ userId, getMovement, hp, maxHp }: RemoteUserHUDProps) => {
   const groupRef = useRef<Group>(null)
 
   useFrame(() => {
-    if (!socketId) return
-    const movement = getMovement(socketId)
+    if (!userId) return
+    const movement = getMovement(userId)
     if (!movement || !groupRef.current) return
 
     groupRef.current.position.set(
@@ -135,10 +135,10 @@ export const RemoteUserHUDs = () => {
       <LocalUserHUD getLocalMovement={getLocalMovement} hp={100} maxHp={maxHp} />
       {remoteUsers.map((user) => (
         <RemoteUserHUD
-          key={user.socketId}
-          socketId={user.socketId}
+          key={user.id}
+          userId={user.id}
           getMovement={getMovement}
-          hp={generateHpFromId(user.socketId)}
+          hp={generateHpFromId(user.id)}
           maxHp={maxHp}
         />
       ))}
