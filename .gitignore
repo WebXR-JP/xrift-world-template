@@ -9,7 +9,6 @@ dist
 .env.local
 
 # Editor
-.vscode
 .idea
 
 # OS
