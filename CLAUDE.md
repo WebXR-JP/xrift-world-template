@@ -49,8 +49,13 @@ const model = useGLTF(`${baseUrl}/models/robot.glb`) // 余分な / NG
 | `Interactable` | クリック可能オブジェクト | `id`(必須), `onInteract`(必須), `interactionText`, `enabled` |
 | `SpawnPoint` | プレイヤー出現地点 | `position`, `yaw`(0-360度) |
 | `Mirror` | 反射面 | `position`, `rotation`, `size`, `color`, `textureResolution` |
-| `VideoScreen` | 動画再生 | `id`(必須), `position`, `url`, `playing`, `sync` |
+| `RichVideoPlayer` | UI付き動画再生（推奨） | `id`(必須), `url`(必須), `position`, `rotation`, `width`, `playing`, `volume`, `sync` |
+| `VideoScreen` | 基本動画再生 | `id`(必須), `position`, `url`, `playing`, `sync` |
 | `ScreenShareDisplay` | 画面共有表示 | `id`(必須), `position`, `rotation`, `width` |
+
+**RichVideoPlayer vs VideoScreen**:
+- `RichVideoPlayer`: UIコントロール付き（再生/一時停止、進捗バー、音量調整）、VR対応
+- `VideoScreen`: シンプルな同期映像表示のみ
 
 ---
 

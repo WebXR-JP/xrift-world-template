@@ -1,4 +1,4 @@
-import { Mirror, ScreenShareDisplay, SpawnPoint, VideoScreen } from '@xrift/world-components'
+import { Mirror, RichVideoPlayer, ScreenShareDisplay, SpawnPoint } from '@xrift/world-components'
 import { RigidBody } from '@react-three/rapier'
 import { useRef } from 'react'
 import { Mesh } from 'three'
@@ -162,10 +162,11 @@ export const World: React.FC<WorldProps> = ({ position = [0, 0, 0], scale = 1 })
         size={[4 * scale, 3 * scale]}
       />
 
-      <VideoScreen
+      <RichVideoPlayer
         id='sample-video'
         position={[9.72, 2, 0]}
         rotation={[0, -Math.PI / 2, 0]}
+        width={4}
         url='https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4'
         playing
       />
