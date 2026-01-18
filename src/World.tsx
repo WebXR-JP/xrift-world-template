@@ -169,6 +169,7 @@ export const World: React.FC<WorldProps> = ({ position = [0, 0, 0], scale = 1 })
         width={4}
         url='https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4'
         playing
+        volume={0}
       />
 
       {/* 画面共有ディスプレイ - 左側の壁に配置 */}
