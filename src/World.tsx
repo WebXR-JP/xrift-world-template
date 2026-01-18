@@ -178,6 +178,7 @@ export const World: React.FC<WorldProps> = ({ position = [0, 0, 0], scale = 1 })
         position={[0, 2, 9.72]}
         rotation={[0, Math.PI, 0]}
         width={4}
+        url='https://devstreaming-cdn.apple.com/videos/streaming/examples/bipbop_16x9/bipbop_16x9_variant.m3u8'
         volume={0}
       />
 
