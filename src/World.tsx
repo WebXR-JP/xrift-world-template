@@ -1,4 +1,4 @@
-import { Mirror, ScreenShareDisplay, SpawnPoint, VideoPlayer } from '@xrift/world-components'
+import { LiveVideoPlayer, Mirror, ScreenShareDisplay, SpawnPoint, VideoPlayer } from '@xrift/world-components'
 import { RigidBody } from '@react-three/rapier'
 import { useRef } from 'react'
 import { Mesh } from 'three'
@@ -169,6 +169,15 @@ export const World: React.FC<WorldProps> = ({ position = [0, 0, 0], scale = 1 })
         width={4}
         url='https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4'
         playing
+        volume={0}
+      />
+
+      {/* ライブ配信プレイヤー - 正面の壁に配置 */}
+      <LiveVideoPlayer
+        id='sample-live'
+        position={[0, 2, 9.72]}
+        rotation={[0, Math.PI, 0]}
+        width={4}
         volume={0}
       />
 
