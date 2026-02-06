@@ -188,6 +188,75 @@ function Crosshair({ active }: { active: boolean }) {
   )
 }
 
+const pointerLockContainerStyle: React.CSSProperties = {
+  position: 'absolute',
+  top: 20,
+  left: '50%',
+  transform: 'translateX(-50%)',
+  zIndex: 1001,
+  pointerEvents: 'none',
+}
+
+const pointerLockStatusBase: React.CSSProperties = {
+  display: 'flex',
+  alignItems: 'center',
+  gap: 8,
+  padding: '8px 12px',
+  borderRadius: 6,
+  fontSize: 12,
+  border: '1px solid rgba(255, 255, 255, 0.1)',
+  transition: 'all 0.3s ease',
+  whiteSpace: 'nowrap',
+  fontFamily: 'system-ui, sans-serif',
+  fontWeight: 500,
+}
+
+const pointerLockKbdStyle: React.CSSProperties = {
+  display: 'inline-block',
+  padding: '2px 6px',
+  background: 'rgba(255, 255, 255, 0.1)',
+  border: '1px solid rgba(255, 255, 255, 0.2)',
+  borderRadius: 3,
+  fontFamily: 'monospace',
+  fontSize: 11,
+  fontWeight: 'bold',
+  margin: '0 2px',
+}
+
+function PointerLockStatus({ isLocked }: { isLocked: boolean }) {
+  return (
+    <div style={pointerLockContainerStyle}>
+      <div
+        style={{
+          ...pointerLockStatusBase,
+          ...(isLocked
+            ? {
+                background: 'rgba(34, 197, 94, 0.25)',
+                color: '#22c55e',
+                borderColor: 'rgba(34, 197, 94, 0.3)',
+              }
+            : {
+                background: 'rgba(249, 115, 22, 0.25)',
+                color: '#f97316',
+                borderColor: 'rgba(249, 115, 22, 0.3)',
+              }),
+        }}
+      >
+        <span style={{ fontSize: 14 }}>{isLocked ? '\u{1F512}' : '\u{1F5B1}\uFE0F'}</span>
+        <span>
+          {isLocked ? (
+            <>
+              マウスロック中 - <kbd style={pointerLockKbdStyle}>ESC</kbd>で解除
+            </>
+          ) : (
+            '画面をクリックしてマウスロック開始'
+          )}
+        </span>
+      </div>
+    </div>
+  )
+}
+
 const controlsHelpStyle: React.CSSProperties = {
   position: 'absolute',
   bottom: 16,
@@ -243,7 +312,18 @@ function ControlsHelp() {
 
 function App() {
   const [isHit, setIsHit] = useState(false)
+  const [isPointerLocked, setIsPointerLocked] = useState(false)
   const handleHitChange = useCallback((hit: boolean) => setIsHit(hit), [])
+
+  useEffect(() => {
+    const handleChange = () => {
+      setIsPointerLocked(document.pointerLockElement !== null)
+    }
+    document.addEventListener('pointerlockchange', handleChange)
+    return () => {
+      document.removeEventListener('pointerlockchange', handleChange)
+    }
+  }, [])
 
   return (
     <XRiftProvider baseUrl="/">
@@ -260,6 +340,7 @@ function App() {
           </Physics>
         </Canvas>
         <Crosshair active={isHit} />
+        <PointerLockStatus isLocked={isPointerLocked} />
         <ControlsHelp />
       </div>
     </XRiftProvider>
