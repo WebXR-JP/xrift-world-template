@@ -57,7 +57,8 @@ function FirstPersonControls() {
       (keys.has('KeyD') || keys.has('ArrowRight') ? 1 : 0) +
       (keys.has('KeyA') || keys.has('ArrowLeft') ? -1 : 0)
     const vertical =
-      (keys.has('KeyE') ? 1 : 0) + (keys.has('KeyQ') ? -1 : 0)
+      (keys.has('KeyE') || keys.has('Space') ? 1 : 0) +
+      (keys.has('KeyQ') ? -1 : 0)
 
     if (forward === 0 && strafe === 0 && vertical === 0) return
 
@@ -183,7 +184,8 @@ function ControlsHelp() {
         <Kbd>D</Kbd> 移動
       </div>
       <div>
-        <Kbd>Q</Kbd> 下降 <Kbd>E</Kbd> 上昇
+        <Kbd>Q</Kbd> 下降 <Kbd>E</Kbd>
+        <Kbd>Space</Kbd> 上昇
       </div>
       <div>
         <Kbd>ESC</Kbd> ロック解除
