@@ -54,6 +54,36 @@ const model = useGLTF(`${baseUrl}/models/robot.glb`) // 余分な / NG
 
 **VideoPlayer**: UIコントロール付き（再生/一時停止、進捗バー、音量調整、URL入力）、VR対応
 
+### 定数
+
+#### LAYERS（Three.js レイヤー定数）
+
+Three.js のカメラとオブジェクトは 32 のレイヤー（0-31）を持ち、カメラは有効化されたレイヤーに属するオブジェクトのみをレンダリングする。
+XRift では以下のレイヤーを使用する。
+
+| 定数名 | 値 | 用途 |
+|--------|-----|------|
+| `LAYERS.DEFAULT` | 0 | デフォルトレイヤー（すべてのオブジェクトが初期状態で属する） |
+| `LAYERS.FIRST_PERSON_ONLY` | 9 | 一人称視点のみ表示（VRM のヘッドレスコピー用） |
+| `LAYERS.THIRD_PERSON_ONLY` | 10 | 三人称視点のみ表示（他プレイヤーやミラー用） |
+| `LAYERS.INTERACTABLE` | 11 | インタラクト可能オブジェクト（Raycast 検出用） |
+
+```typescript
+// インポート方法
+import { LAYERS } from '@xrift/world-components'
+```
+
+**仕組み**:
+- `Interactable` コンポーネントは子オブジェクトに自動で `LAYERS.INTERACTABLE` を設定する
+- 本番環境ではフロントエンド側が `LAYERS.INTERACTABLE` レイヤーで Raycast を行いインタラクションを検出する
+- 開発環境（`dev.tsx`）でインタラクションをテストする場合、Raycaster のレイヤーを `LAYERS.INTERACTABLE` に設定する必要がある
+
+```typescript
+// Raycaster でインタラクト可能オブジェクトのみを検出
+const raycaster = new Raycaster()
+raycaster.layers.set(LAYERS.INTERACTABLE) // レイヤー11のオブジェクトのみヒット
+```
+
 ---
 
 ## コード生成テンプレート
@@ -328,26 +358,23 @@ xrift logout       # ログアウト
 
 ---
 
-## 開発環境セットアップ
+## 開発環境での動作確認
+
+`npm run dev` で開発サーバーを起動すると、一人称視点でワールドを操作・テストできる。
+
+| 操作 | キー |
+|------|------|
+| 視点操作 | 画面クリックでマウスロック → マウス移動 |
+| 移動 | W / A / S / D |
+| 上昇 / 下降 | E・Space / Q |
+| インタラクト | 照準を合わせてクリック |
+| マウスロック解除 | ESC |
+
+`Interactable` コンポーネントのクリック動作も開発環境で確認可能（画面中央の Raycaster が `LAYERS.INTERACTABLE` レイヤーを検出）。
 
 ### dev.tsx の構成
 
-```typescript
-import { XRiftProvider } from '@xrift/world-components'
-import { Canvas } from '@react-three/fiber'
-import { Physics } from '@react-three/rapier'
-import { World } from './World'
-
-createRoot(rootElement).render(
-  <XRiftProvider baseUrl="/">
-    <Canvas shadows camera={{ position: [0, 5, 10], fov: 75 }}>
-      <Physics>
-        <World />
-      </Physics>
-    </Canvas>
-  </XRiftProvider>
-)
-```
+`src/dev.tsx` は開発専用のエントリーポイント。本番ビルドには含まれない。
 
 **注意**: 本番環境では `XRiftProvider` は不要（フロントエンド側が自動でラップ）
 
