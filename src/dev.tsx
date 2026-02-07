@@ -31,20 +31,50 @@ function FirstPersonControls() {
   const rightRef = useRef(new Vector3())
   const moveRef = useRef(new Vector3())
 
+  // キー入力の正規化ヘルパー（OS/ブラウザ差異を吸収）
+  const getKeyCodes = (event: KeyboardEvent): string[] => {
+    const codes = new Set<string>()
+    if (event.code) codes.add(event.code)
+    if (event.key) {
+      if (/^[a-zA-Z]$/.test(event.key)) {
+        codes.add(`Key${event.key.toUpperCase()}`)
+      } else if (/^Arrow(Up|Down|Left|Right)$/.test(event.key)) {
+        codes.add(event.key)
+      } else if (event.key === ' ') {
+        codes.add('Space')
+      }
+    }
+    return [...codes]
+  }
+
   useEffect(() => {
+    const shouldHandle = (event: KeyboardEvent) => {
+      const target = event.target
+      if (!(target instanceof HTMLElement)) return true
+      const tag = target.tagName
+      return tag !== 'INPUT' && tag !== 'TEXTAREA' && target.contentEditable !== 'true'
+    }
+
     const handleKeyDown = (event: KeyboardEvent) => {
-      pressedKeysRef.current.add(event.code)
+      if (!shouldHandle(event)) return
+      for (const code of getKeyCodes(event)) {
+        pressedKeysRef.current.add(code)
+      }
     }
     const handleKeyUp = (event: KeyboardEvent) => {
-      pressedKeysRef.current.delete(event.code)
+      if (!shouldHandle(event)) return
+      for (const code of getKeyCodes(event)) {
+        pressedKeysRef.current.delete(code)
+      }
     }
 
-    window.addEventListener('keydown', handleKeyDown)
-    window.addEventListener('keyup', handleKeyUp)
+    // PointerLock対策で capture: true を使用
+    document.addEventListener('keydown', handleKeyDown, { capture: true })
+    document.addEventListener('keyup', handleKeyUp, { capture: true })
 
     return () => {
-      window.removeEventListener('keydown', handleKeyDown)
-      window.removeEventListener('keyup', handleKeyUp)
+      document.removeEventListener('keydown', handleKeyDown, { capture: true })
+      document.removeEventListener('keyup', handleKeyUp, { capture: true })
     }
   }, [])
 
@@ -85,8 +115,10 @@ function FirstPersonControls() {
 
 function CenterRaycaster({
   onHitChange,
+  maxDistance = 5,
 }: {
   onHitChange: (hit: boolean) => void
+  maxDistance?: number
 }) {
   const { camera, scene } = useThree()
   const raycasterRef = useRef(new Raycaster())
@@ -117,6 +149,7 @@ function CenterRaycaster({
 
   useFrame(() => {
     const raycaster = raycasterRef.current
+    raycaster.far = maxDistance
     raycaster.layers.set(LAYERS.INTERACTABLE)
     raycaster.setFromCamera(ndcRef.current, camera)
     const hits = raycaster.intersectObjects(scene.children, true)
@@ -331,7 +364,7 @@ function App() {
           gl={{ preserveDrawingBuffer: true }}
         >
           <FirstPersonControls />
-          <CenterRaycaster onHitChange={handleHitChange} />
+          <CenterRaycaster onHitChange={handleHitChange} maxDistance={1} />
           <Physics>
             <World />
           </Physics>
