@@ -1,4 +1,8 @@
 {
+  "physics": {
+    "gravity": 9.81,
+    "allowInfiniteJump": true
+  },
   "world": {
     "distDir": "./dist",
     "title": "サンプルワールド",

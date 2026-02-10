@@ -7,29 +7,63 @@
  * 操作方法:
  * - 画面クリックでポインターロック開始
  * - マウスで視点操作、WASD / 矢印キーで移動
- * - Q / E で上昇 / 下降
+ * - Space / E ジャンプ、Q 下降
  * - インタラクト可能オブジェクトに照準を合わせてクリック
  * - ESC でポインターロック解除
  */
 
 import { LAYERS, XRiftProvider } from '@xrift/world-components'
 import { Canvas, useFrame, useThree } from '@react-three/fiber'
-import { Physics } from '@react-three/rapier'
+import {
+  CapsuleCollider,
+  CuboidCollider,
+  Physics,
+  RigidBody,
+} from '@react-three/rapier'
+import type { RapierRigidBody } from '@react-three/rapier'
 import { PointerLockControls } from '@react-three/drei'
 import { StrictMode, useCallback, useEffect, useRef, useState } from 'react'
 import { createRoot } from 'react-dom/client'
 import { PCFShadowMap, Raycaster, Vector2, Vector3 } from 'three'
 import type { Group, Mesh, Object3D } from 'three'
 import { World } from './World'
+import xriftConfig from '../xrift.json'
+
+// --- 物理定数（xrift-frontend 準拠） ---
+const PLAYER_HALF_HEIGHT = 0.4
+const PLAYER_RADIUS = 0.4
+const MOVE_SPEED = 5.0
+const JUMP_VELOCITY = 4.5
+const LINEAR_DAMPING = 0.2
+const CAMERA_Y_OFFSET = 0.64
+const RESPAWN_Y_THRESHOLD = -10
+const SPAWN_POSITION: [number, number, number] = [0.11, 1.6, 7.59]
+
+const physicsConfig = (xriftConfig as { physics?: { gravity?: number; allowInfiniteJump?: boolean } }).physics
+const GRAVITY = physicsConfig?.gravity ?? 9.81
+const ALLOW_INFINITE_JUMP = physicsConfig?.allowInfiniteJump ?? true
 
 const rootElement = document.getElementById('root')
 if (!rootElement) throw new Error('Root element not found')
 
-function FirstPersonControls() {
+function PhysicsPlayer() {
+  const rigidBodyRef = useRef<RapierRigidBody>(null)
+  const avatarGroupRef = useRef<Group>(null)
+  const headRef = useRef<Mesh>(null)
   const pressedKeysRef = useRef<Set<string>>(new Set())
+  const isGroundedRef = useRef(false)
+  const prevSpaceRef = useRef(false)
   const forwardRef = useRef(new Vector3())
   const rightRef = useRef(new Vector3())
-  const moveRef = useRef(new Vector3())
+
+  const { camera } = useThree()
+
+  // アバターを三人称レイヤーに設定（一人称カメラには映らない）
+  useEffect(() => {
+    avatarGroupRef.current?.traverse((obj) => {
+      obj.layers.set(LAYERS.THIRD_PERSON_ONLY)
+    })
+  }, [])
 
   useEffect(() => {
     const shouldHandle = (event: KeyboardEvent) => {
@@ -77,66 +111,118 @@ function FirstPersonControls() {
     }
   }, [])
 
-  useFrame(({ camera }, delta) => {
+  useFrame(() => {
+    const rb = rigidBodyRef.current
+    if (!rb) return
+
     const keys = pressedKeysRef.current
-    const forward =
+
+    // --- 移動ベクトル算出 ---
+    const fwd =
       (keys.has('KeyW') || keys.has('w') || keys.has('ArrowUp') ? 1 : 0) +
       (keys.has('KeyS') || keys.has('s') || keys.has('ArrowDown') ? -1 : 0)
     const strafe =
       (keys.has('KeyD') || keys.has('d') || keys.has('ArrowRight') ? 1 : 0) +
       (keys.has('KeyA') || keys.has('a') || keys.has('ArrowLeft') ? -1 : 0)
-    const vertical =
-      (keys.has('KeyE') || keys.has('e') || keys.has('Space') || keys.has(' ') ? 1 : 0) +
-      (keys.has('KeyQ') || keys.has('q') ? -1 : 0)
-
-    if (forward === 0 && strafe === 0 && vertical === 0) return
 
     camera.getWorldDirection(forwardRef.current)
     forwardRef.current.y = 0
     forwardRef.current.normalize()
     rightRef.current.crossVectors(forwardRef.current, camera.up).normalize()
 
-    moveRef.current
-      .set(0, 0, 0)
-      .addScaledVector(forwardRef.current, forward)
-      .addScaledVector(rightRef.current, strafe)
+    let moveX = forwardRef.current.x * fwd + rightRef.current.x * strafe
+    let moveZ = forwardRef.current.z * fwd + rightRef.current.z * strafe
+    const len = Math.sqrt(moveX * moveX + moveZ * moveZ)
+    if (len > 0) {
+      moveX = (moveX / len) * MOVE_SPEED
+      moveZ = (moveZ / len) * MOVE_SPEED
+    }
 
-    const horizontalLength = moveRef.current.length()
-    if (horizontalLength > 0) moveRef.current.normalize()
-    moveRef.current.multiplyScalar(4 * delta)
-    moveRef.current.y += vertical * 4 * delta
+    // --- ジャンプ ---
+    const currentVel = rb.linvel()
+    const spacePressed = keys.has('Space') || keys.has(' ') || keys.has('KeyE') || keys.has('e')
+    let vy = currentVel.y
 
-    camera.position.add(moveRef.current)
+    if (ALLOW_INFINITE_JUMP) {
+      if (spacePressed) {
+        vy = JUMP_VELOCITY
+      }
+    } else {
+      const spaceEdge = spacePressed && !prevSpaceRef.current
+      if (spaceEdge && isGroundedRef.current) {
+        vy = JUMP_VELOCITY
+      }
+    }
+    prevSpaceRef.current = spacePressed
+
+    rb.setLinvel({ x: moveX, y: vy, z: moveZ }, true)
+
+    // --- カメラ位置同期 ---
+    const pos = rb.translation()
+    camera.position.set(pos.x, pos.y + CAMERA_Y_OFFSET, pos.z)
+
+    // --- DummyAvatar 位置同期 ---
+    if (avatarGroupRef.current) {
+      avatarGroupRef.current.position.set(pos.x, pos.y + CAMERA_Y_OFFSET, pos.z)
+      camera.getWorldDirection(forwardRef.current)
+      const yaw = -Math.atan2(forwardRef.current.x, -forwardRef.current.z)
+      const pitch = Math.asin(forwardRef.current.y)
+      avatarGroupRef.current.rotation.set(0, yaw, 0)
+      if (headRef.current) {
+        headRef.current.rotation.set(pitch, 0, 0)
+      }
+    }
+
+    // --- リスポーン ---
+    if (pos.y < RESPAWN_Y_THRESHOLD) {
+      rb.setTranslation(
+        { x: SPAWN_POSITION[0], y: SPAWN_POSITION[1], z: SPAWN_POSITION[2] },
+        true,
+      )
+      rb.setLinvel({ x: 0, y: 0, z: 0 }, true)
+    }
   })
 
-  return <PointerLockControls />
-}
-
-function DummyAvatar({ height = 1.5 }: { height?: number }) {
-  const forwardRef = useRef(new Vector3())
-  const groupRef = useRef<Group>(null)
-  const headRef = useRef<Mesh>(null)
-
-  useFrame(({ camera }) => {
-    camera.getWorldDirection(forwardRef.current)
-    const yaw = -Math.atan2(forwardRef.current.x, -forwardRef.current.z)
-    const pitch = Math.asin(forwardRef.current.y)
-    groupRef.current?.position.copy(camera.position)
-    groupRef.current?.rotation.set(0, yaw, 0)
-    headRef.current?.rotation.set(pitch, 0, 0)
-  })
+  const height = 1.5
 
   return (
-    <group ref={groupRef}>
-      <mesh castShadow ref={headRef}>
-        <boxGeometry args={[0.2, 0.1, 0.2]} />
-        <meshLambertMaterial color="#ffcccc" />
-      </mesh>
-      <mesh castShadow position={[0, -height * 0.55, 0]}>
-        <boxGeometry args={[0.3, height, 0.1]} />
-        <meshLambertMaterial color="#ccffcc" />
-      </mesh>
-    </group>
+    <>
+      <RigidBody
+        ref={rigidBodyRef}
+        type="dynamic"
+        position={SPAWN_POSITION}
+        lockRotations
+        friction={0}
+        restitution={0}
+        linearDamping={LINEAR_DAMPING}
+        enabledRotations={[false, false, false]}
+      >
+        <CapsuleCollider args={[PLAYER_HALF_HEIGHT, PLAYER_RADIUS]} />
+        <CuboidCollider
+          args={[PLAYER_RADIUS * 0.9, 0.05, PLAYER_RADIUS * 0.9]}
+          position={[0, -(PLAYER_HALF_HEIGHT + PLAYER_RADIUS), 0]}
+          sensor
+          onIntersectionEnter={() => {
+            isGroundedRef.current = true
+          }}
+          onIntersectionExit={() => {
+            isGroundedRef.current = false
+          }}
+        />
+      </RigidBody>
+
+      {/* DummyAvatar - RigidBody 外に配置し useFrame で位置同期 */}
+      <group ref={avatarGroupRef}>
+        <mesh castShadow ref={headRef}>
+          <boxGeometry args={[0.2, 0.1, 0.2]} />
+          <meshLambertMaterial color="#ffcccc" />
+        </mesh>
+        <mesh castShadow position={[0, -height * 0.55, 0]}>
+          <boxGeometry args={[0.3, height, 0.1]} />
+          <meshLambertMaterial color="#ccffcc" />
+        </mesh>
+      </group>
+    </>
   )
 }
 
@@ -358,8 +444,8 @@ function ControlsHelp() {
         <Kbd>D</Kbd> 移動
       </div>
       <div>
-        <Kbd>Q</Kbd> 下降 <Kbd>E</Kbd>
-        <Kbd>Space</Kbd> 上昇
+        <Kbd>Space</Kbd>
+        <Kbd>E</Kbd> ジャンプ
       </div>
     </div>
   )
@@ -385,13 +471,13 @@ function App() {
       <div style={{ width: '100vw', height: '100vh', position: 'relative' }}>
         <Canvas
           shadows={{ type: PCFShadowMap }}
-          camera={{ position: [0, 1.6, 0], fov: 50, near: 0.01, far: 1000 }}
+          camera={{ position: SPAWN_POSITION, fov: 50, near: 0.01, far: 1000 }}
           gl={{ preserveDrawingBuffer: true }}
         >
-          <FirstPersonControls />
-          <DummyAvatar />
+          <PointerLockControls />
           <CenterRaycaster onHitChange={handleHitChange} />
-          <Physics>
+          <Physics gravity={[0, -GRAVITY, 0]} timeStep="vary">
+            <PhysicsPlayer />
             <World />
           </Physics>
         </Canvas>
