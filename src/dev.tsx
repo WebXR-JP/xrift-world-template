@@ -18,7 +18,7 @@ import { Physics } from '@react-three/rapier'
 import { PointerLockControls } from '@react-three/drei'
 import { StrictMode, useCallback, useEffect, useRef, useState } from 'react'
 import { createRoot } from 'react-dom/client'
-import { Raycaster, Vector2, Vector3 } from 'three'
+import { PCFShadowMap, Raycaster, Vector2, Vector3 } from 'three'
 import type { Object3D } from 'three'
 import { World } from './World'
 
@@ -356,7 +356,7 @@ function App() {
     <XRiftProvider baseUrl="/">
       <div style={{ width: '100vw', height: '100vh', position: 'relative' }}>
         <Canvas
-          shadows
+          shadows={{ type: PCFShadowMap }}
           camera={{ position: [0, 1.5, 5], fov: 75 }}
           gl={{ preserveDrawingBuffer: true }}
         >

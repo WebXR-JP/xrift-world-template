@@ -33,17 +33,16 @@ export const World: React.FC<WorldProps> = ({ position = [0, 0, 0], scale = 1 })
       {/* 照明設定 */}
       <ambientLight intensity={0.3} />
       <directionalLight
-        position={[10, 10, 5]}
-        intensity={1}
+        position={[5, 10, 5]}
+        intensity={1.5}
         castShadow
-        shadow-mapSize-width={1024}
-        shadow-mapSize-height={1024}
+        shadow-mapSize-width={512}
+        shadow-mapSize-height={512}
         shadow-camera-far={50}
         shadow-camera-left={-15}
         shadow-camera-right={15}
         shadow-camera-top={15}
         shadow-camera-bottom={-15}
-        shadow-bias={-0.0005}
       />
 
       {/* 地面 */}
