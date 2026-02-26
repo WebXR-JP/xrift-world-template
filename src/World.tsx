@@ -6,7 +6,9 @@ import { Duck } from './components/Duck'
 import { InteractableButton } from './components/InteractableButton'
 import { RemoteUserHUDs } from './components/RemoteUserHUDs'
 import { RotatingObject } from './components/RotatingObject'
+import { SecretRoom } from './components/SecretRoom'
 import { Skybox } from './components/Skybox'
+import { TeleportPortal } from './components/TeleportPortal'
 import { COLORS, WORLD_CONFIG } from './constants'
 
 export interface WorldProps {
@@ -221,6 +223,19 @@ export const World: React.FC<WorldProps> = ({ position = [0, 0, 0], scale = 1 })
 
       {/* ユーザーの位置情報HUD - useUsers() APIの検証用 */}
       <RemoteUserHUDs />
+
+      {/* テレポートポータル: 隠し部屋へ */}
+      <TeleportPortal
+        id="portal-to-secret"
+        position={[5, 1, 5]}
+        destination={[0, 0.5, 52]}
+        yaw={0}
+        label="隠し部屋へ"
+        color="#8B5CF6"
+      />
+
+      {/* 隠し部屋（メインワールドから離れた場所） */}
+      <SecretRoom />
     </group>
   )
 }
