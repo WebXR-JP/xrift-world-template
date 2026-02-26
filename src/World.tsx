@@ -226,8 +226,7 @@ export const World: React.FC<WorldProps> = ({ position = [0, 0, 0], scale = 1 })
 
       {/* テレポートポータル: 隠し部屋へ */}
       <TeleportPortal
-        id="portal-to-secret"
-        position={[5, 1, 5]}
+        position={[5, 0, 5]}
         destination={[0, 0.5, 52]}
         yaw={0}
         label="隠し部屋へ"

@@ -41,6 +41,7 @@ const model = useGLTF(`${baseUrl}/robot.glb`) // 余分な / NG
 | `useUsers()` | ユーザー情報・位置取得 | `{ localUser, remoteUsers, getMovement, getLocalMovement }` |
 | `useSpawnPoint()` | スポーン地点取得 | `{ position, yaw }` |
 | `useScreenShareContext()` | 画面共有状態 | `{ videoElement, isSharing, startScreenShare, stopScreenShare }` |
+| `useTeleport()` | プレイヤー瞬間移動 | `{ teleport: (dest: TeleportDestination) => void }` |
 
 ### コンポーネント
 
@@ -218,6 +219,53 @@ export const RotatingCube = ({ speed = 1 }) => {
   )
 }
 ```
+
+### テレポート（useTeleport）
+
+[ドキュメント](https://docs.xrift.net/world-components/components/#useteleport)
+
+```typescript
+import { useCallback } from 'react'
+import { useTeleport } from '@xrift/world-components'
+import { RigidBody } from '@react-three/rapier'
+
+// TeleportDestination 型
+// { position: [number, number, number], yaw?: number }
+// yaw は度数法（0-360）、省略時は現在の向きを維持
+
+// Interactable と組み合わせる例（クリックでテレポート）
+export const TeleportButton = () => {
+  const { teleport } = useTeleport()
+  return (
+    <Interactable
+      id="tp-button"
+      onInteract={() => teleport({ position: [50, 0, 30], yaw: 180 })}
+      interactionText="テレポート"
+    >
+      <mesh><boxGeometry /><meshStandardMaterial color="purple" /></mesh>
+    </Interactable>
+  )
+}
+
+// RigidBody sensor と組み合わせる例（触れたらテレポート）
+export const TeleportZone = () => {
+  const { teleport } = useTeleport()
+  const handleEnter = useCallback(() => {
+    teleport({ position: [0, 0.5, 50], yaw: 0 })
+  }, [teleport])
+
+  return (
+    <RigidBody type="fixed" sensor onIntersectionEnter={handleEnter}>
+      <mesh>
+        <cylinderGeometry args={[1.2, 1.2, 1, 32]} />
+        <meshBasicMaterial visible={false} />
+      </mesh>
+    </RigidBody>
+  )
+}
+```
+
+**注意**: sensor 方式でワープゾーンを作る場合、テレポート先が別のポータルと重ならないようにすること（着地即ワープのループになる）
 
 ### ユーザー位置追跡
 
@@ -451,4 +499,5 @@ const model = useGLTF(`${baseUrl}/robot.glb`)
 - **アニメーション**: `src/components/RotatingObject/index.tsx`
 - **インタラクション**: `src/components/InteractableButton/index.tsx`
 - **ユーザー追跡**: `src/components/RemoteUserHUDs/index.tsx`
+- **テレポート**: `src/components/TeleportPortal/index.tsx`
 - **メインワールド**: `src/World.tsx`

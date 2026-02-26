@@ -96,9 +96,8 @@ export const SecretRoom = () => {
 
       {/* 帰還ポータル */}
       <TeleportPortal
-        id="portal-return"
-        position={[cx, cy + 1, cz - 2.5]}
-        destination={[5, 0.5, 5]}
+        position={[cx, cy, cz - 2.5]}
+        destination={[0, 0.5, 5]}
         yaw={225}
         label="メインに戻る"
         color="#10B981"
