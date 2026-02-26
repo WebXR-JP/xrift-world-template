@@ -76,7 +76,7 @@ const RemoteUserHUD = ({ userId, getMovement, hp, maxHp }: RemoteUserHUDProps) =
 
     groupRef.current.position.set(
       movement.position.x,
-      movement.position.y + 1.5,
+      movement.position.y + 2.2,
       movement.position.z
     )
   })
@@ -103,7 +103,7 @@ const LocalUserHUD = ({ getLocalMovement, hp, maxHp }: LocalUserHUDProps) => {
 
     groupRef.current.position.set(
       movement.position.x,
-      movement.position.y + 1.5,
+      movement.position.y + 2.2,
       movement.position.z
     )
   })
