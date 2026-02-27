@@ -27,7 +27,7 @@
     "@react-three/rapier": "^2.1.0",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
-    "three": "^0.182.0"
+    "three": "^0.183.1"
   },
   "devDependencies": {
     "@originjs/vite-plugin-federation": "^1.4.1",
@@ -36,12 +36,12 @@
     "@react-three/rapier": "^2.2.0",
     "@types/react": "^19.2.13",
     "@types/react-dom": "^19.2.3",
-    "@types/three": "^0.182.0",
+    "@types/three": "^0.183.1",
     "@vitejs/plugin-react": "^5.1.4",
     "baseline-browser-mapping": "^2.9.19",
     "react": "^19.2.4",
     "react-dom": "^19.2.4",
-    "three": "^0.182.0",
+    "three": "^0.183.1",
     "typescript": "^5.6.2",
     "vite": "^7.3.1",
     "vite-plugin-dts": "^4.0.0"
