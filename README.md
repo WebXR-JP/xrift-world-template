@@ -108,6 +108,16 @@ xrift.jsonの`world.physics`セクションでワールドの物理動作をカ�
 }
 ```
 
+## AI Agent Skills
+
+AIコーディングエージェントを使ってワールドを制作する場合、以下のコマンドでXRiftワールド制作に必要な情報をエージェントに取り込めます。
+
+```bash
+npx skills add WebXR-JP/xrift-skills
+```
+
+対応エージェント: Claude Code, Cursor, Copilot, Codex 等（40以上）
+
 ## ドキュメント
 
 ワールド開発の詳細（アセットの読み込み、SpawnPoint、Interactable、useInstanceStateなど）については、公式ドキュメントをご覧ください。
