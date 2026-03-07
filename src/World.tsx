@@ -1,4 +1,4 @@
-import { LiveVideoPlayer, Mirror, ScreenShareDisplay, SpawnPoint, VideoPlayer } from '@xrift/world-components'
+import { LiveVideoPlayer, Mirror, Portal, ScreenShareDisplay, SpawnPoint, VideoPlayer } from '@xrift/world-components'
 import { RigidBody } from '@react-three/rapier'
 import { useRef } from 'react'
 import { Mesh } from 'three'
@@ -231,6 +231,12 @@ export const World: React.FC<WorldProps> = ({ position = [0, 0, 0], scale = 1 })
         yaw={0}
         label="隠し部屋へ"
         color="#8B5CF6"
+      />
+
+      {/* 別インスタンスへのポータル */}
+      <Portal
+        instanceId="e1f2ba87-fb50-406e-9527-2334cf75cd4c"
+        position={[-5, 0, 5]}
       />
 
       {/* 隠し部屋（メインワールドから離れた場所） */}
