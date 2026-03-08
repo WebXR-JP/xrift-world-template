@@ -32,7 +32,7 @@ xrift login
 ### 3. 新しいワールドプロジェクトを作成
 
 ```bash
-xrift create my-world
+xrift create world my-world
 ```
 
 ### 4. 開発サーバーを起動

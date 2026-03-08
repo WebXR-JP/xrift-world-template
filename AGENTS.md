@@ -65,8 +65,8 @@ npm run typecheck  # 型チェック
 
 # XRift CLI
 xrift login        # 認証
-xrift create       # 新規プロジェクト作成
-xrift upload world # ワールドをアップロード
+xrift create world # 新規ワールドプロジェクト作成
+xrift upload       # アップロード（xrift.json から自動判定）
 xrift whoami       # ログインユーザー確認
 xrift logout       # ログアウト
 ```
