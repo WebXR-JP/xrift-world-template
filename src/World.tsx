@@ -2,6 +2,7 @@ import { LiveVideoPlayer, Mirror, Portal, ScreenShareDisplay, SpawnPoint, VideoP
 import { RigidBody } from '@react-three/rapier'
 import { useRef } from 'react'
 import { Mesh } from 'three'
+import { DracoSample } from './components/DracoSample'
 import { Duck } from './components/Duck'
 import { InteractableButton } from './components/InteractableButton'
 import { RemoteUserHUDs } from './components/RemoteUserHUDs'
@@ -201,6 +202,11 @@ export const World: React.FC<WorldProps> = ({ position = [0, 0, 0], scale = 1 })
       {/* Duck 3Dモデル - useXRiftの使用例 */}
       <RigidBody type="dynamic" colliders="cuboid" restitution={0} friction={0}>
         <Duck position={[-2, 0.5, 0]} scale={1} />
+      </RigidBody>
+
+      {/* DRACOLoader サンプル - three/addons からの import 例 */}
+      <RigidBody type="dynamic" colliders="cuboid" restitution={0} friction={0}>
+        <DracoSample position={[0, 0.5, 1]} scale={10} />
       </RigidBody>
 
       {/* Interactableボタン - クリック可能なオブジェクトの例（ローカルステート） */}
