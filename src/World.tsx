@@ -206,7 +206,7 @@ export const World: React.FC<WorldProps> = ({ position = [0, 0, 0], scale = 1 })
 
       {/* DRACOLoader サンプル - three/addons からの import 例 */}
       <RigidBody type="dynamic" colliders="cuboid" restitution={0} friction={0}>
-        <DracoSample position={[0, 0.5, 0]} scale={10} />
+        <DracoSample position={[0, 0.5, 1]} scale={10} />
       </RigidBody>
 
       {/* Interactableボタン - クリック可能なオブジェクトの例（ローカルステート） */}
