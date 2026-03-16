@@ -26,6 +26,10 @@
     "physics": {
       "gravity": 9.81,
       "allowInfiniteJump": true
+    },
+    "camera": {
+      "near": 0.1,
+      "far": 1000
     }
   }
 }
