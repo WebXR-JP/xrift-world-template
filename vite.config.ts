@@ -33,7 +33,7 @@ export default defineConfig({
         },
         three: {
           singleton: true,
-          requiredVersion: '^0.176.0',
+          requiredVersion: '^0.183.1',
         },
         'three/addons/loaders/DRACOLoader.js': {
           singleton: true,
@@ -56,7 +56,7 @@ export default defineConfig({
         },
         '@xrift/world-components': {
           singleton: true,
-          requiredVersion: '^0.1.0',
+          requiredVersion: '^0.41.0',
         },
       },
     }),
