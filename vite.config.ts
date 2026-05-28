@@ -19,11 +19,11 @@ export default defineConfig({
       shared: {
         react: {
           singleton: true,
-          requiredVersion: '^19.0.0',
+          requiredVersion: '*',
         },
         'react-dom': {
           singleton: true,
-          requiredVersion: '^19.0.0',
+          requiredVersion: '*',
         },
         'react-dom/client': {
           singleton: true,
@@ -33,30 +33,30 @@ export default defineConfig({
         },
         three: {
           singleton: true,
-          requiredVersion: '^0.183.1',
+          requiredVersion: '*',
         },
         'three/addons/loaders/DRACOLoader.js': {
           singleton: true,
         },
         '@react-three/fiber': {
           singleton: true,
-          requiredVersion: '^9.3.0',
+          requiredVersion: '*',
         },
         '@react-three/rapier': {
           singleton: true,
-          requiredVersion: '^2.1.0',
+          requiredVersion: '*',
         },
         '@react-three/drei': {
           singleton: true,
-          requiredVersion: '^10.7.3',
+          requiredVersion: '*',
         },
         '@react-three/uikit': {
           singleton: true,
-          requiredVersion: '^1.0.0',
+          requiredVersion: '*',
         },
         '@xrift/world-components': {
           singleton: true,
-          requiredVersion: '^0.41.0',
+          requiredVersion: '*',
         },
       },
     }),
