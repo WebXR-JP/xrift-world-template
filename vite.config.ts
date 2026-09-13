@@ -35,7 +35,13 @@ export default defineConfig({
           singleton: true,
           requiredVersion: '*',
         },
+        'three/addons/loaders/GLTFLoader.js': {
+          singleton: true,
+        },
         'three/addons/loaders/DRACOLoader.js': {
+          singleton: true,
+        },
+        'three/addons/loaders/KTX2Loader.js': {
           singleton: true,
         },
         '@react-three/fiber': {
@@ -51,6 +57,10 @@ export default defineConfig({
           requiredVersion: '*',
         },
         '@react-three/uikit': {
+          singleton: true,
+          requiredVersion: '*',
+        },
+        '@pmndrs/uikit': {
           singleton: true,
           requiredVersion: '*',
         },

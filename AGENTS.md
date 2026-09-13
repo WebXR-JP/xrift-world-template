@@ -33,11 +33,13 @@ const model = useGLTF(`${baseUrl}/robot.glb`) // 余分な / NG
 Module Federation により、以下のパッケージはワールドチャンクにインライン化されず shared チャンクとして分離されます：
 
 - `react`, `react-dom`, `react/jsx-runtime`, `react-dom/client`
-- `three`, `three/addons`
+- `three`
+- `three/addons/loaders/GLTFLoader.js`, `three/addons/loaders/DRACOLoader.js`, `three/addons/loaders/KTX2Loader.js`（サブパス単位のみ。バレル全体やその他のアドオンは対象外）
 - `@react-three/fiber`, `@react-three/drei`, `@react-three/rapier`
+- `@react-three/uikit`, `@pmndrs/uikit`
 - `@xrift/world-components`
 
-**`three/addons` について**: DRACOLoader 等の Three.js アドオンは `three/addons` から import してください。`three/examples/jsm` からの直接 import はワールドチャンクにインライン化され、`@xrift/code-security` で `new Worker()` が critical 違反として検出される場合があります。
+**Three.js アドオンについて**: DRACOLoader 等の Three.js アドオンは `three/addons/loaders/xxx.js` のサブパスで import してください（`three/addons` バレル全体は shared 対象外）。`three/examples/jsm` からの直接 import はワールドチャンクにインライン化され、`@xrift/code-security` で `new Worker()` が critical 違反として検出される場合があります。
 
 ```typescript
 // ✅ 正しい（shared チャンクとして分離される）
@@ -96,10 +98,7 @@ xrift logout       # ログアウト
 
 ## 実装例の参照先
 
-- **GLBモデル**: `src/components/Duck/index.tsx`
+このテンプレートは最小構成のため、実装例は以下のみです。その他のコンポーネント（VideoPlayer、Interactable等）の使い方は [XRift ドキュメント](https://docs.xrift.net) を参照してください。
+
 - **Skybox**: `src/components/Skybox/index.tsx`
-- **アニメーション**: `src/components/RotatingObject/index.tsx`
-- **インタラクション**: `src/components/InteractableButton/index.tsx`
-- **ユーザー追跡**: `src/components/RemoteUserHUDs/index.tsx`
-- **テレポート**: `src/components/TeleportPortal/index.tsx`
 - **メインワールド**: `src/World.tsx`
