@@ -15,8 +15,5 @@ dist
 # OS
 .DS_Store
 
-# XRift
-.xrift
-
 # Skills
 .agents
