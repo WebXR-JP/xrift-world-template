@@ -28,6 +28,27 @@ const model = useGLTF(`${baseUrl}/robot.glb`) // 余分な / NG
 
 ---
 
+## shared 依存として利用可能なパッケージ
+
+Module Federation により、以下のパッケージはワールドチャンクにインライン化されず shared チャンクとして分離されます：
+
+- `react`, `react-dom`, `react/jsx-runtime`, `react-dom/client`
+- `three`, `three/addons`
+- `@react-three/fiber`, `@react-three/drei`, `@react-three/rapier`
+- `@xrift/world-components`
+
+**`three/addons` について**: DRACOLoader 等の Three.js アドオンは `three/addons` から import してください。`three/examples/jsm` からの直接 import はワールドチャンクにインライン化され、`@xrift/code-security` で `new Worker()` が critical 違反として検出される場合があります。
+
+```typescript
+// ✅ 正しい（shared チャンクとして分離される）
+import { DRACOLoader } from 'three/addons/loaders/DRACOLoader.js'
+
+// ❌ 間違い（インライン化されセキュリティ違反の可能性）
+import { DRACOLoader } from 'three/examples/jsm/loaders/DRACOLoader.js'
+```
+
+---
+
 ## プロジェクト概要
 
 - **用途**: XRiftプラットフォーム用WebXRワールド
