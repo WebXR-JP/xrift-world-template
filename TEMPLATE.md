@@ -188,9 +188,11 @@ src/
 
 ```tsx
 import { useTexture } from '@react-three/drei'
+import { useXRift } from '@xrift/world-components'
 
 function TexturedBox() {
-  const texture = useTexture('/textures/my-texture.jpg')
+  const { baseUrl } = useXRift()
+  const texture = useTexture(`${baseUrl}my-texture.jpg`)
 
   return (
     <Box args={[1, 1, 1]}>
@@ -200,7 +202,7 @@ function TexturedBox() {
 }
 ```
 
-テクスチャファイルは `public/textures/` に配置してください。
+テクスチャファイルは `public/` 直下に配置してください（`baseUrl` は末尾に `/` を含むため、`${baseUrl}my-texture.jpg` と結合します）。
 
 ## 開発時のヒント
 
