@@ -3,10 +3,13 @@ import path from 'path'
 import { defineConfig } from 'vite'
 import dts from 'vite-plugin-dts'
 import federation from '@originjs/vite-plugin-federation'
+import { xriftDev } from '@xrift/sdk/vite'
 
 export default defineConfig({
   plugins: [
     react(),
+    // <Item itemId> をローカルでも本番と同じバンドルで動かすための中継（要 xrift login）
+    xriftDev(),
     dts({
       insertTypesEntry: true,
     }),
