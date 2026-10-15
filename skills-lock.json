@@ -4,7 +4,8 @@
     "xrift-world": {
       "source": "WebXR-JP/xrift-skills",
       "sourceType": "github",
-      "computedHash": "b048508f69a9dd33a2d4a58678120f274debe54f8c9e85b5e94c9a799401dc7b"
+      "skillPath": "skills/xrift-world/SKILL.md",
+      "computedHash": "473ac67ac09b643b5c926209e67019ca003f113b40563cd46b2f427678d51b42"
     }
   }
 }
