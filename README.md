@@ -83,6 +83,8 @@ xrift.jsonの`world.physics`セクションでワールドの物理動作をカ�
 |------|-----|---------|------|
 | `gravity` | number | 9.81 | 重力の強さ |
 | `allowInfiniteJump` | boolean | true | 無限ジャンプを許可するか |
+| `allowFly` | boolean | true | 浮遊モード（フライモード）を許可するか |
+| `respawnThreshold` | number | -10 | この高さ（Y 座標）を下回るとスポーン地点へ戻す。スポーン地点より低くする |
 
 ### 例：アスレチックワールド（無限ジャンプ禁止）
 
