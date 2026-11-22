@@ -17,6 +17,7 @@
   ],
   "scripts": {
     "dev": "vite",
+    "dev:vr": "vite --host --mode https",
     "build": "tsc && vite build",
     "preview": "vite preview",
     "typecheck": "tsc --noEmit"
@@ -38,11 +39,12 @@
     "@types/react": "^19.2.14",
     "@types/react-dom": "^19.2.3",
     "@types/three": "^0.183.1",
+    "@vitejs/plugin-basic-ssl": "^2.3.0",
     "@vitejs/plugin-react": "^5.1.4",
     "@xrift/sdk": "^0.2.1",
     "baseline-browser-mapping": "^2.10.0",
-    "react": "~19.2.4",
-    "react-dom": "~19.2.4",
+    "react": "~19.2.8",
+    "react-dom": "~19.2.8",
     "three": "^0.183.1",
     "typescript": "^5.6.2",
     "vite": "^7.3.1",
@@ -52,6 +54,6 @@
     "access": "public"
   },
   "dependencies": {
-    "@xrift/world-components": "^0.66.1"
+    "@xrift/world-components": "^0.67.0"
   }
 }
